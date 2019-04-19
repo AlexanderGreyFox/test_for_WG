@@ -13,7 +13,7 @@ cursor.execute("""CREATE TABLE weapons
                """)
 conn.commit()
 
-conn = sqlite3.connect("mydatabase.db")  # или :memory: чтобы сохранить в RAM
+conn = sqlite3.connect("mydatabase.db")
 cursor = conn.cursor()
 
 # Создание таблицы
@@ -23,7 +23,7 @@ cursor.execute("""CREATE TABLE hulls
                """)
 conn.commit()
 
-conn = sqlite3.connect("mydatabase.db")  # или :memory: чтобы сохранить в RAM
+conn = sqlite3.connect("mydatabase.db")
 cursor = conn.cursor()
 
 # Создание таблицы
@@ -41,6 +41,6 @@ cursor.execute("""CREATE TABLE ships
                """)
 conn.commit()
 
-conn = sqlite3.connect("mydatabase.db")  # или :memory: чтобы сохранить в RAM
+conn = sqlite3.connect("mydatabase.db")
 cursor = conn.cursor()
 conn.close()

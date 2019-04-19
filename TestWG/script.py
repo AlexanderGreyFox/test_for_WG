@@ -6,35 +6,35 @@ def script_db_insert():
     conn = sqlite3.connect("mydatabase.db")
     cursor = conn.cursor()
 
-    #weapons 20 записей
+    # weapons 20
     i = 1
     while i <= 20:
         weapon = 'Weapon' + str(i)
         reload_speed = random.randint(1, 50)
-        rotation_speed = random.randint(1,50)
-        diameter = random.randint(1,50)
-        power_volley = random.randint(1,50)
-        count = random.randint(1,50)
-        cursor.execute("""INSERT OR REPLACE INTO weapons
+        rotation_speed = random.randint(1, 50)
+        diameter = random.randint(1, 50)
+        power_volley = random.randint(1, 50)
+        count = random.randint(1, 50)
+        cursor.execute("""INSERT INTO weapons
                               VALUES (?, ?, ?, ?, ?, ?)""", (weapon, reload_speed, rotation_speed, diameter,
                                                              power_volley, count)
                        )
         conn.commit()
-        i+=1
+        i += 1
 
-    #hulls 5
+    # hulls 5
     i = 1
     while i <= 5:
         hull = 'Hull' + str(i)
-        armor = random.randint(1,50)
-        type = random.randint(1,50)
-        capasity = random.randint(1,50)
+        armor = random.randint(1, 50)
+        type = random.randint(1, 50)
+        capasity = random.randint(1, 50)
         cursor.execute("""INSERT INTO hulls
                               VALUES (?, ?, ?, ?)""", (hull, armor, type, capasity)
                        )
         conn.commit()
         i += 1
-    #engines 6
+    # engines 6
     i = 1
     while i <= 6:
         engine = 'Engine' + str(i)
@@ -46,7 +46,7 @@ def script_db_insert():
         conn.commit()
         i += 1
 
-    #ships 200 записей
+    # ships 200 записей
     i = 1
     while i <= 200:
         ship = 'Ship'+str(i)

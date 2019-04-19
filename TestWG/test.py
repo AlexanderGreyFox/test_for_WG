@@ -1,9 +1,3 @@
-#скопировать базу done
-#
-#рандомно меняем рандомные параметры из 3 нижних таблиц в новой базе
-#сравниваем две базейки
-#удаляем вторую базу
-import nose
 import os
 import random
 import sqlite3
@@ -13,27 +7,26 @@ from shutil import copyfile
 
 
 def setup_fun():
-    copyfile("mydatabase.db", "database_for_test.db")
+    """Copy database and start randomisation new database"""
 
+    copyfile("mydatabase.db", "database_for_test.db")
 
     conn = sqlite3.connect("database_for_test.db")
     cursor = conn.cursor()
 
-    #weapons
     keys = random.sample(['reload_speed', 'rotational_speed', 'diameter', 'power_volley', 'count'], random.randint(1,5))
 
     for k in keys:
         i = 1
         while i <= 20:
-
+            # here and after in all UPDATE sql requests I used .format becouse because the column is not known and
+            # standard methods with ?,?,? does not work
             cursor.execute("""UPDATE "main"."weapons" SET {k}={v} WHERE "_rowid_"={i};""".format(k=k,
                                                                                                  v=random.randint(1,50),
                                                                                                  i = str(i)))
 
-            i+=1
+            i += 1
             conn.commit()
-
-    #Hulls
 
     keys = random.sample(['armor', 'type', 'capacity'], random.randint(1,3))
 
@@ -45,10 +38,8 @@ def setup_fun():
                                                                                                v=random.randint(1,50),
                                                                                                i = str(i)))
 
-            i+=1
+            i += 1
             conn.commit()
-
-    #engines
 
     keys = random.sample(['power', 'type'], random.randint(1,2))
 
@@ -60,10 +51,8 @@ def setup_fun():
                                                                                                  v=random.randint(1,50),
                                                                                                  i = str(i)))
 
-            i+=1
+            i += 1
             conn.commit()
-
-    #ships
 
     keys = random.sample(['weapon', 'hull', 'engine'], 1)
 
@@ -79,25 +68,29 @@ def setup_fun():
                 value = 'Engine' + str(random.randint(1, 6))
             cursor.execute("""UPDATE "main"."ships" SET {k}='{v}' WHERE "_rowid_"={i};""".format(k=k,
                                                                                                  v=str(value),
-                                                                                                 i = str(i)))
+                                                                                                 i=str(i)))
 
-            i+=1
+            i += 1
             conn.commit()
     conn.close()
 
+
 def teardown_fun():
+    """Delete test database"""
 
-    myfile = "database_for_test.db"
+    my_database = "database_for_test.db"
 
-    if os.path.isfile(myfile):
-        os.remove(myfile)
+    if os.path.isfile(my_database):
+        os.remove(my_database)
     else:
-        print("Error: %s file not found" % myfile)
+        print("Error: %s file not found" % my_database)
 
 
 @with_setup(setup_fun, teardown_fun)
 def test_generator():
-    for t in range(1,4):
+    """t is a column number in ships table
+    i is a row number in ships table"""
+    for t in range(1, 4):
 
         for i in range(1, 201):
             s = 'Ship' + str(i)
@@ -108,6 +101,7 @@ def some_fun(a,b):
     conn = sqlite3.connect("mydatabase.db")
     cursor = conn.cursor()
 
+    # check the identity of the data in the ships table
     cursor.execute("""SELECT * from ships where ship = ?""", (a,))
     expected_result = cursor.fetchall()
     expected_result = expected_result[0][b]
@@ -122,6 +116,7 @@ def some_fun(a,b):
 
     assert expected_result == actual_result, f'{a} expected {expected_result}, was {actual_result}'
 
+    # check the identity of the data in the 3 other tables
     conn = sqlite3.connect("mydatabase.db")
     cursor = conn.cursor()
     if b == 1:
@@ -152,6 +147,7 @@ def some_fun(a,b):
     actual_result = actual_result[0]
 
     conn.close()
+    # all possible changes are collected from the table row
     s = ''
     try:
         for i in range(len(actual_result)):
