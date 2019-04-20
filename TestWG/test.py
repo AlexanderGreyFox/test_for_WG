@@ -2,7 +2,6 @@ import os
 import random
 import sqlite3
 from nose.tools import with_setup
-
 from shutil import copyfile
 
 
@@ -17,49 +16,41 @@ def setup_fun():
     keys = random.sample(['reload_speed', 'rotational_speed', 'diameter', 'power_volley', 'count'], random.randint(1,5))
 
     for k in keys:
-        i = 1
-        while i <= 20:
-            # here and after in all UPDATE sql requests I used .format becouse because the column is not known and
+        for i in range(1, 21):
+            # here and after in all UPDATE sql requests I used .format because the column is not known and
             # standard methods with ?,?,? does not work
             cursor.execute("""UPDATE "main"."weapons" SET {k}={v} WHERE "_rowid_"={i};""".format(k=k,
                                                                                                  v=random.randint(1,50),
-                                                                                                 i = str(i)))
+                                                                                                 i=str(i)))
 
-            i += 1
             conn.commit()
 
     keys = random.sample(['armor', 'type', 'capacity'], random.randint(1,3))
 
     for k in keys:
-        i = 1
-        while i <= 5:
+        for i in range(1, 6):
 
             cursor.execute("""UPDATE "main"."hulls" SET {k}={v} WHERE "_rowid_"={i};""".format(k=k,
                                                                                                v=random.randint(1,50),
-                                                                                               i = str(i)))
+                                                                                               i=str(i)))
 
-            i += 1
             conn.commit()
 
-    keys = random.sample(['power', 'type'], random.randint(1,2))
+    keys = random.sample(['power', 'type'], random.randint(1, 2))
 
     for k in keys:
-        i = 1
-        while i <= 6:
+        for i in range(1, 7):
 
             cursor.execute("""UPDATE "main"."engines" SET {k}={v} WHERE "_rowid_"={i};""".format(k=k,
                                                                                                  v=random.randint(1,50),
-                                                                                                 i = str(i)))
+                                                                                                 i=str(i)))
 
-            i += 1
             conn.commit()
 
     keys = random.sample(['weapon', 'hull', 'engine'], 1)
 
     for k in keys:
-        i = 1
-
-        while i <= 200:
+        for i in range(1, 201):
             if k == 'weapon':
                 value = 'Weapon' + str(random.randint(1, 20))
             elif k == 'hull':
@@ -70,7 +61,6 @@ def setup_fun():
                                                                                                  v=str(value),
                                                                                                  i=str(i)))
 
-            i += 1
             conn.commit()
     conn.close()
 
