@@ -3,8 +3,6 @@ import sqlite3
 conn = sqlite3.connect("mydatabase.db")
 cursor = conn.cursor()
 
-
-
 # Создание таблицы
 cursor.execute("""CREATE TABLE weapons
                   (weapon text, reload_speed integer , rotational_speed integer,

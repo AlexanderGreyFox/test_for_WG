@@ -19,9 +19,8 @@ def setup_fun():
         for i in range(1, 21):
             # here and after in all UPDATE sql requests I used .format because the column is not known and
             # standard methods with ?,?,? does not work
-            cursor.execute("""UPDATE "main"."weapons" SET {k}={v} WHERE "_rowid_"={i};""".format(k=k,
-                                                                                                 v=random.randint(1,50),
-                                                                                                 i=str(i)))
+            cursor.execute("""UPDATE "main"."weapons" SET {k}=? WHERE "_rowid_"=?;""".format(k=k),
+                           (random.randint(1, 50), str(i)))
 
             conn.commit()
 
@@ -30,9 +29,8 @@ def setup_fun():
     for k in keys:
         for i in range(1, 6):
 
-            cursor.execute("""UPDATE "main"."hulls" SET {k}={v} WHERE "_rowid_"={i};""".format(k=k,
-                                                                                               v=random.randint(1,50),
-                                                                                               i=str(i)))
+            cursor.execute("""UPDATE "main"."hulls" SET {k}=? WHERE "_rowid_"=?;""".format(k=k),
+                           (random.randint(1, 50), str(i)))
 
             conn.commit()
 
@@ -41,9 +39,8 @@ def setup_fun():
     for k in keys:
         for i in range(1, 7):
 
-            cursor.execute("""UPDATE "main"."engines" SET {k}={v} WHERE "_rowid_"={i};""".format(k=k,
-                                                                                                 v=random.randint(1,50),
-                                                                                                 i=str(i)))
+            cursor.execute("""UPDATE "main"."engines" SET {k}=? WHERE "_rowid_"=?;""".format(k=k),
+                           (random.randint(1, 50), str(i)))
 
             conn.commit()
 
@@ -57,9 +54,8 @@ def setup_fun():
                 value = 'Hull' + str(random.randint(1, 5))
             else:
                 value = 'Engine' + str(random.randint(1, 6))
-            cursor.execute("""UPDATE "main"."ships" SET {k}='{v}' WHERE "_rowid_"={i};""".format(k=k,
-                                                                                                 v=str(value),
-                                                                                                 i=str(i)))
+            cursor.execute("""UPDATE "main"."ships" SET {k}=? WHERE "_rowid_"=?;""".format(k=k),
+                           (random.randint(1, 50), str(i)))
 
             conn.commit()
     conn.close()
@@ -78,8 +74,8 @@ def teardown_fun():
 
 @with_setup(setup_fun, teardown_fun)
 def test_generator():
-    """t is a column number in ships table
-    i is a row number in ships table"""
+    # t is a column number in ships table
+    # i is a row number in ships table
     for t in range(1, 4):
 
         for i in range(1, 201):
