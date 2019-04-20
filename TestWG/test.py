@@ -97,7 +97,7 @@ def test_generator():
             yield some_fun, s, t
 
 
-def some_fun(a,b):
+def some_fun(a, b):
     conn = sqlite3.connect("mydatabase.db")
     cursor = conn.cursor()
 
