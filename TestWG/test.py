@@ -55,7 +55,7 @@ def setup_fun():
             else:
                 value = 'Engine' + str(random.randint(1, 6))
             cursor.execute("""UPDATE "main"."ships" SET {k}=? WHERE "_rowid_"=?;""".format(k=k),
-                           (random.randint(1, 50), str(i)))
+                           (value, str(i)))
 
             conn.commit()
     conn.close()
